@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Employee Data Collector</title>
+    <script type="text/javascript" src="../vendor/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <link rel="stylesheet" href="main.css" />
+    <link href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+
+  </head>
+  <body>
+    <section>
+      <header>
+        <h1>Employee Data Collector</h1>
+      </header>
+      <main>
+        <div class="employee-form">
+          <form id="employeeinfo">
+            <label for="employeefirstname">First Name:</label>
+            <input type="text" id="employeefirstname" name="employeefirstname" required/>
+
+            <label for="employeelastname">Last Name:</label>
+            <input type="text" id="employeelastname" name="employeelastname" required/>
+
+            <label for="employeeIdNumber">ID Number:</label>
+            <input type="number" id="employeeIdNumber" name="employeeIdNumber" required/>
+
+            <label for="employeeJobTitle">Job Title:</label>
+            <input type="text" id="employeeJobTitle" name="employeeJobTitle" required/>
+
+            <label for="employeeAnnualSalary">Annual Salary:</label>
+            <input type="number" id="employeeAnnualSalary" name="employeeAnnualSalary" required/>
+
+            <input type="submit" value="Submit Employee" id="submitButton"/>
+          </form>
+        </div>
+
+        <div class="employeeList">
+          <h3>Employee List</h3>
+          <table style="width:60%" id="employeeListTable">
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Annual Salary</th>
+              <th>Delete Employee</th>
+            </tr>
+          </table>
+        </div>
+
+        <div class="expeditures">
+          <h2>Monthly Salary Expenditures: <span id="monthlyExpenditures">$0.00</span></h2>
+        </div>
+
+      </main>
+    </section>
+  </body>
+</html>
