@@ -3,13 +3,15 @@
   <head>
     <title>Employee Data Collector</title>
     <script type="text/javascript" src="../vendor/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-    <link rel="stylesheet" href="main.css" />
+    <script type="text/javascript" src="../vendor/angular.min.js"></script>
+    <script type="text/javascript" src="./scripts/client.js"></script>
+
+    <link rel="stylesheet" href="../styles/main.css" />
     <link href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
 
   </head>
-  <body>
+  <body ng-app="myApp">
     <section>
       <header>
         <h1>Employee Data Collector</h1>
@@ -36,17 +38,29 @@
           </form>
         </div>
 
-        <div class="employeeList">
+        <div class="employeeList" ng-controller="EmployeeController as employee">
           <h3>Employee List</h3>
           <table style="width:60%" id="employeeListTable">
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Annual Salary</th>
-              <th>Delete Employee</th>
-            </tr>
+            <thead>
+              <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Annual Salary</th>
+                <th>Delete Employee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="employeeData in employee.employees">
+                <td>{{employeeData.first_name}}</td>
+                <td>{{employeeData.last_name}}</td>
+                <td>{{employeeData.id_number}}</td>
+                <td>{{employeeData.job_title}}</td>
+                <td>{{employeeData.annual_salary}}</td>
+                <td>{{employeeData.active}}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
 
