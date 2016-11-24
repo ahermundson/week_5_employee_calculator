@@ -12,11 +12,15 @@ var app = angular.module('myApp',[]);
 // }]);
 
 app.controller('EmployeeController', ["$http", function($http) {
-  console.log('Within Employee Controller');
+  console.log('Within Get Employee Controller');
   var self = this;
   self.employees = [];
+  self.newEmployee = {};
+  self.expenditure;
   getEmployees();
+  getExpenditure();
 
+  //Fetch employees from database to display on page
   function getEmployees() {
     $http.get('/employees')
     .then(function (response){
@@ -24,10 +28,49 @@ app.controller('EmployeeController', ["$http", function($http) {
       self.employees = response.data;
     })
   }
+
+  function getExpenditure() {
+    $http.get('/employees/expenditure')
+    .then(function (response){
+      // console.log(response.data[0].sum);
+      self.expenditure = Number(response.data[0].sum) / 12;
+      console.log(self.expenditure);
+    })
+  }
+  //Post new employess and run getEmployees when complete
+  self.postEmployee = function() {
+    console.log("new employee: ", self.newEmployee);
+    $http.post('/employees', self.newEmployee)
+    .then(function (response){
+      console.log('POST finished. Get books again.');
+      getEmployees();
+      getExpenditure();
+    })
+  }
+
+  //toggle between active and inactive when clicked
+  self.active = function(index) {
+    console.log(index);
+    console.log("Should get the specific object: ", self.employees[index].id);
+    var id = self.employees[index].id
+    $http.put('/employees/' + id)
+      .then(function(response) {
+        console.log('PUT finished. Employee updated.');
+        getEmployees();
+        getExpenditure();
+      });
+  }
+
 }]);
 
 
-
+// app.controller('PostEmployeeController', ["$http", function($http) {
+//   console.log('Within Post Employee Controller');
+//   var self = this;
+//
+//
+//
+// }]);
 
 
 // $(document).ready(function() {

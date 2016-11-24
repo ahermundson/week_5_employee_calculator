@@ -16,29 +16,29 @@
       <header>
         <h1>Employee Data Collector</h1>
       </header>
-      <main>
+      <main ng-controller="EmployeeController as employee">
         <div class="employee-form">
           <form id="employeeinfo">
             <label for="employeefirstname">First Name:</label>
-            <input type="text" id="employeefirstname" name="employeefirstname" required/>
+            <input type="text" id="employeefirstname" name="employeefirstname" ng-model="employee.newEmployee.first_name" required/>
 
             <label for="employeelastname">Last Name:</label>
-            <input type="text" id="employeelastname" name="employeelastname" required/>
+            <input type="text" id="employeelastname" name="employeelastname" ng-model="employee.newEmployee.last_name" required/>
 
             <label for="employeeIdNumber">ID Number:</label>
-            <input type="number" id="employeeIdNumber" name="employeeIdNumber" required/>
+            <input type="number" id="employeeIdNumber" name="employeeIdNumber" ng-model="employee.newEmployee.id_number" required/>
 
             <label for="employeeJobTitle">Job Title:</label>
-            <input type="text" id="employeeJobTitle" name="employeeJobTitle" required/>
+            <input type="text" id="employeeJobTitle" name="employeeJobTitle" ng-model="employee.newEmployee.job_title" required/>
 
             <label for="employeeAnnualSalary">Annual Salary:</label>
-            <input type="number" id="employeeAnnualSalary" name="employeeAnnualSalary" required/>
+            <input type="number" id="employeeAnnualSalary" name="employeeAnnualSalary" ng-model="employee.newEmployee.annual_salary" required/>
 
-            <input type="submit" value="Submit Employee" id="submitButton"/>
+            <input type="submit" value="Submit Employee" id="submitButton" ng-click="employee.postEmployee()"/>
           </form>
         </div>
 
-        <div class="employeeList" ng-controller="EmployeeController as employee">
+        <div class="employeeList">
           <h3>Employee List</h3>
           <table style="width:60%" id="employeeListTable">
             <thead>
@@ -48,24 +48,25 @@
                 <th>ID</th>
                 <th>Title</th>
                 <th>Annual Salary</th>
-                <th>Delete Employee</th>
+                <th>Active?</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="employeeData in employee.employees">
+              <tr ng-repeat="employeeData in employee.employees track by $index">
                 <td>{{employeeData.first_name}}</td>
                 <td>{{employeeData.last_name}}</td>
                 <td>{{employeeData.id_number}}</td>
                 <td>{{employeeData.job_title}}</td>
-                <td>{{employeeData.annual_salary}}</td>
-                <td>{{employeeData.active}}</td>
+                <td>{{employeeData.annual_salary | currency}}</td>
+                <td><input type="submit" ng-model="employee.active" ng-click="employee.active($index)" ng-show="{{employeeData.active}}"  ng-hide="{{!employeeData.active}}" value="ACTIVE"/></td>
+                <!--{{employeeData.active}}-->
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="expeditures">
-          <h2>Monthly Salary Expenditures: <span id="monthlyExpenditures">$0.00</span></h2>
+          <h2>Monthly Salary Expenditures: {{employee.expenditure | currency}}</h2>
         </div>
 
       </main>
