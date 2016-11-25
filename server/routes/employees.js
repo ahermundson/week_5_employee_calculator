@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
       res.sendStatus(500);
     }
 
-    client.query('SELECT * FROM employees ORDER BY id', function(err, result) {
+    client.query('SELECT * FROM employees ORDER BY active, id DESC', function(err, result) {
       done(); // close the connection.
 
       if(err) {
@@ -34,7 +34,7 @@ router.get('/expenditure', function(req, res) {
       res.sendStatus(500);
     }
 
-    client.query('SELECT SUM(annual_salary) FROM employees WHERE active = true;', function(err, result) {
+    client.query("SELECT SUM(annual_salary) FROM employees WHERE active = 'active';", function(err, result) {
       done(); // close the connection.
 
       if(err) {
@@ -83,7 +83,7 @@ router.put('/:id', function(req,res) {
       console.log('connection error: ', err);
       res.sendStatus(500);
     }
-    client.query('UPDATE employees SET active = NOT active WHERE id = $1',
+    client.query("UPDATE employees SET active = CASE WHEN active = 'active' THEN 'inactive' ELSE 'active' END WHERE id = $1;",
     [id],
     function(err, result) {
       done(); // close the connection.

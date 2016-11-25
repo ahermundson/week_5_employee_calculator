@@ -11,6 +11,6 @@ TO DO
 [x] Setup file structure and routes.
 [x] Bring in angular and perhaps bootstrap.
 [x] CREATE GET REQUEST to pull employee information from the database
-[] CREATE POST request to put new employees in the database
+[x] CREATE POST request to put new employees in the database
 [] CREATE Views for the header, footer, and main container
-[] CREATE angular controllers to handle the content. Make sure to include $http in your parameter array. Look at the angular warehouse example.
+[x] CREATE angular controllers to handle the content. Make sure to include $http in your parameter array. Look at the angular warehouse example.

@@ -37,6 +37,7 @@ app.controller('EmployeeController', ["$http", function($http) {
       console.log(self.expenditure);
     })
   }
+
   //Post new employess and run getEmployees when complete
   self.postEmployee = function() {
     console.log("new employee: ", self.newEmployee);
@@ -45,13 +46,14 @@ app.controller('EmployeeController', ["$http", function($http) {
       console.log('POST finished. Get books again.');
       getEmployees();
       getExpenditure();
+      self.newEmployee = {};
+      self.employeeinfo.$setPristine();
+      self.employeeinfo.$setUntouched();
     })
   }
 
   //toggle between active and inactive when clicked
   self.active = function(index) {
-    console.log(index);
-    console.log("Should get the specific object: ", self.employees[index].id);
     var id = self.employees[index].id
     $http.put('/employees/' + id)
       .then(function(response) {

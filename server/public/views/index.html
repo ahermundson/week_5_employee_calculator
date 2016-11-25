@@ -18,7 +18,7 @@
       </header>
       <main ng-controller="EmployeeController as employee">
         <div class="employee-form">
-          <form id="employeeinfo">
+          <form ng-attr-id="employeeinfo">
             <label for="employeefirstname">First Name:</label>
             <input type="text" id="employeefirstname" name="employeefirstname" ng-model="employee.newEmployee.first_name" required/>
 
@@ -48,17 +48,17 @@
                 <th>ID</th>
                 <th>Title</th>
                 <th>Annual Salary</th>
-                <th>Active?</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="employeeData in employee.employees track by $index">
+              <tr ng-repeat="employeeData in employee.employees track by $index" class="{{employeeData.active}}">
                 <td>{{employeeData.first_name}}</td>
                 <td>{{employeeData.last_name}}</td>
                 <td>{{employeeData.id_number}}</td>
                 <td>{{employeeData.job_title}}</td>
                 <td>{{employeeData.annual_salary | currency}}</td>
-                <td><input type="submit" ng-model="employee.active" ng-click="employee.active($index)" ng-show="{{employeeData.active}}"  ng-hide="{{!employeeData.active}}" value="ACTIVE"/></td>
+                <td><input type="button" ng-model="employee.active" ng-click="employee.active($index)" value="{{employeeData.active}}"/></td>
                 <!--{{employeeData.active}}-->
               </tr>
             </tbody>
