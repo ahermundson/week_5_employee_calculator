@@ -1,0 +1,51 @@
+<div class="employee-form">
+  <form ng-attr-id="employeeinfo">
+    <label for="employeefirstname">First Name:</label>
+    <input type="text" id="employeefirstname" name="employeefirstname" ng-model="employee.newEmployee.first_name" required/>
+
+    <label for="employeelastname">Last Name:</label>
+    <input type="text" id="employeelastname" name="employeelastname" ng-model="employee.newEmployee.last_name" required/>
+
+    <label for="employeeIdNumber">ID Number:</label>
+    <input type="number" id="employeeIdNumber" name="employeeIdNumber" ng-model="employee.newEmployee.id_number" required/>
+
+    <label for="employeeJobTitle">Job Title:</label>
+    <input type="text" id="employeeJobTitle" name="employeeJobTitle" ng-model="employee.newEmployee.job_title" required/>
+
+    <label for="employeeAnnualSalary">Annual Salary:</label>
+    <input type="number" id="employeeAnnualSalary" name="employeeAnnualSalary" ng-model="employee.newEmployee.annual_salary" required/>
+
+    <input type="submit" value="Submit Employee" id="submitButton" ng-click="employee.postEmployee()"/>
+  </form>
+</div>
+
+<div class="employeeList">
+  <h3>Employee List</h3>
+  <table style="width:60%" id="employeeListTable">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Annual Salary</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="employeeData in employee.employees track by $index" class="{{employeeData.active}}">
+        <td>{{employeeData.first_name}}</td>
+        <td>{{employeeData.last_name}}</td>
+        <td>{{employeeData.id_number}}</td>
+        <td>{{employeeData.job_title}}</td>
+        <td>{{employeeData.annual_salary | currency}}</td>
+        <td><input type="button" ng-model="employee.active" ng-click="employee.active($index)" value="{{employeeData.active}}"/></td>
+        <!--{{employeeData.active}}-->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="expeditures">
+  <h2>Monthly Salary Expenditures: {{employee.expenditure | currency}}</h2>
+</div>

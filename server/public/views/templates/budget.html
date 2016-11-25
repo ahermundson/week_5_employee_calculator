@@ -1,0 +1,5 @@
+<h3>Monthly Salary Budget</h3>
+<p>Our current monthly budget is: {{budget.monthlyBudget | currency}}</p>
+<label for="monthlyBudget">Set New Budget:</label>
+<input type="number" id="monthlyBudget" name="monthlyBudget" ng-model="budget.newBudgetInput">
+<input type="submit" value="Submit Budget" id="submitButton" ng-click="budget.newBudget()"/>

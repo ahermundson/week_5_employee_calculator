@@ -19,6 +19,7 @@
   "homepage": "https://github.com/oliver0/angular-warehouse#readme",
   "dependencies": {
     "angular": "^1.5.8",
+    "angular-route": "^1.5.9",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
     "express": "^4.14.0",

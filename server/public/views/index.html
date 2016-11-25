@@ -5,7 +5,8 @@
     <script type="text/javascript" src="../vendor/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../vendor/angular.min.js"></script>
     <script type="text/javascript" src="./scripts/client.js"></script>
-
+    <script src="/vendor/angular-route.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../vendor/bootstrap.min.css" />
     <link rel="stylesheet" href="../styles/main.css" />
     <link href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
@@ -13,63 +14,10 @@
   </head>
   <body ng-app="myApp">
     <section>
-      <header>
-        <h1>Employee Data Collector</h1>
-      </header>
-      <main ng-controller="EmployeeController as employee">
-        <div class="employee-form">
-          <form ng-attr-id="employeeinfo">
-            <label for="employeefirstname">First Name:</label>
-            <input type="text" id="employeefirstname" name="employeefirstname" ng-model="employee.newEmployee.first_name" required/>
-
-            <label for="employeelastname">Last Name:</label>
-            <input type="text" id="employeelastname" name="employeelastname" ng-model="employee.newEmployee.last_name" required/>
-
-            <label for="employeeIdNumber">ID Number:</label>
-            <input type="number" id="employeeIdNumber" name="employeeIdNumber" ng-model="employee.newEmployee.id_number" required/>
-
-            <label for="employeeJobTitle">Job Title:</label>
-            <input type="text" id="employeeJobTitle" name="employeeJobTitle" ng-model="employee.newEmployee.job_title" required/>
-
-            <label for="employeeAnnualSalary">Annual Salary:</label>
-            <input type="number" id="employeeAnnualSalary" name="employeeAnnualSalary" ng-model="employee.newEmployee.annual_salary" required/>
-
-            <input type="submit" value="Submit Employee" id="submitButton" ng-click="employee.postEmployee()"/>
-          </form>
-        </div>
-
-        <div class="employeeList">
-          <h3>Employee List</h3>
-          <table style="width:60%" id="employeeListTable">
-            <thead>
-              <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Annual Salary</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="employeeData in employee.employees track by $index" class="{{employeeData.active}}">
-                <td>{{employeeData.first_name}}</td>
-                <td>{{employeeData.last_name}}</td>
-                <td>{{employeeData.id_number}}</td>
-                <td>{{employeeData.job_title}}</td>
-                <td>{{employeeData.annual_salary | currency}}</td>
-                <td><input type="button" ng-model="employee.active" ng-click="employee.active($index)" value="{{employeeData.active}}"/></td>
-                <!--{{employeeData.active}}-->
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="expeditures">
-          <h2>Monthly Salary Expenditures: {{employee.expenditure | currency}}</h2>
-        </div>
-
-      </main>
+      <div ng-include="'/views/templates/header.html'"></div>
+      <div ng-include="'/views/templates/nav.html'"></div>
+      <main ng-view></main>
+      <footer ng-include="'/views/templates/footer.html'"></footer>
     </section>
   </body>
 </html>
