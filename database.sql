@@ -7,3 +7,12 @@ job_title VARCHAR(80),
 annual_salary INTEGER,
 active BOOLEAN DEFAULT TRUE
 );
+
+
+CREATE TABLE budget(
+  id SERIAL PRIMARY KEY,
+  budget INTEGER
+);
+
+INSERT INTO budget(budget)
+VALUES (120000);
