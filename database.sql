@@ -10,9 +10,7 @@ active BOOLEAN DEFAULT TRUE
 
 
 CREATE TABLE budget(
-  id SERIAL PRIMARY KEY,
-  budget INTEGER
+id SERIAL PRIMARY KEY,
+budget INTEGER,
+date DATE
 );
-
-INSERT INTO budget(budget)
-VALUES (120000);

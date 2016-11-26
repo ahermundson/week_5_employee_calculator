@@ -22,7 +22,7 @@ app.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
-app.controller('EmployeeController', ["$http", function($http) {
+app.controller('EmployeeController', ["$http", "budgetFactory", function($http , budgetFactory) {
   console.log('Within Get Employee Controller');
   var self = this;
   self.employees = [];
@@ -30,6 +30,8 @@ app.controller('EmployeeController', ["$http", function($http) {
   self.expenditure;
   getEmployees();
   getExpenditure();
+  console.log(budgetFactory);
+  getCurrentMonthlyBudget();
 
   //Fetch employees from database to display on page
   function getEmployees() {
@@ -47,6 +49,11 @@ app.controller('EmployeeController', ["$http", function($http) {
       self.expenditure = Number(response.data[0].sum) / 12;
       console.log(self.expenditure);
     })
+  }
+
+  function getCurrentMonthlyBudget() {
+    budgetFactory.getCurrentBudget();
+    console.log(budgetFactory.currentBudget);
   }
 
   //Post new employess and run getEmployees when complete
@@ -79,33 +86,55 @@ app.controller('EmployeeController', ["$http", function($http) {
 app.controller('BudgetController', ["$http", function($http) {
   console.log("In Budget Controller");
   var self = this;
-  self.monthlyBudget = '';
+  self.budget = [];
   self.newBudgetInput = '';
   getBudget();
   function getBudget() {
     $http.get('/budget')
     .then(function (response){
       console.log("Response.data: ", response.data);
-      self.monthlyBudget = response.data[0].budget;
+      self.budget = response.data;
+      for (var i = 0; i < self.budget.length; i++) {
+        self.budget[i].date = moment(self.budget[i].date).format('MM/DD/YYYY');
+        // self.budget[i].date = momentDate.format("LLL");
+        console.log(self.budget[i].date);
+      }
+      self.currentBudget = self.budget[0].budget;
     })
   }
 
   self.newBudget = function() {
     console.log("got to newBudget function");
+    var budgetDate = moment();
     var newBudgetNumber = {
-      newMonthlyBudget: self.newBudgetInput
+      newMonthlyBudget: self.newBudgetInput,
+      date: budgetDate
     }
     console.log(newBudgetNumber);
-    $http.put('/budget', newBudgetNumber)
+    $http.post('/budget', newBudgetNumber)
       .then(function(response) {
         console.log('PUT finished. Employee updated.');
         getBudget();
         self.newBudgetInput = '';
       });
   }
-}]);
+}]); ///end of budget controller
 
 app.controller('HomeController', ["$http", function($http) {
   console.log("In Home Controller");
 
 }]);
+
+
+app.factory('budgetFactory', function($http) {
+  console.log("Budget Factory");
+  var service = {};
+  service.getCurrentBudget = function() {
+    $http.get('/budget')
+    .then(function (response){
+      console.log("Response.data: ", response.data);
+       service.currentBudget = response.data[0].budget;
+    })
+  }
+  return service;
+}); //end of budget factory

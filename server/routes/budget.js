@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
       res.sendStatus(500);
     }
 
-    client.query('SELECT * FROM budget', function(err, result) {
+    client.query('SELECT * FROM budget ORDER BY id DESC', function(err, result) {
       done(); // close the connection.
 
       if(err) {
@@ -25,16 +25,18 @@ router.get('/', function(req, res) {
   });
 });
 
-router.put('/', function(req,res) {
-  console.log(req.body.newMonthlyBudget);
+router.post('/', function(req,res) {
+  console.log(req.body);
   var newBudget = req.body.newMonthlyBudget;
+  var date = req.body.date;
   pg.connect(connectionString, function(err, client, done) {
     if(err) {
       console.log('connection error: ', err);
       res.sendStatus(500);
     }
-    client.query("UPDATE budget SET budget = $1",
-    [newBudget],
+    client.query("INSERT INTO budget (budget, date) " +
+    "VALUES ($1,$2)",
+    [newBudget, date],
     function(err, result) {
       done(); // close the connection.
 
