@@ -180,3 +180,15 @@ th, td {
   padding-top: 50px;
   text-align: center;
 }
+
+.over {
+  color: rgb(237, 67, 55);
+}
+
+.under {
+  color: black;
+}
+
+.active-toggle {
+  padding: 5px 10px;
+}

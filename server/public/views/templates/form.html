@@ -39,7 +39,7 @@
         <td>{{employeeData.id_number}}</td>
         <td>{{employeeData.job_title}}</td>
         <td>{{employeeData.annual_salary | currency}}</td>
-        <td><input type="button" ng-model="employee.active" ng-click="employee.active($index)" value="{{employeeData.active}}"/></td>
+        <td><input type="button" ng-model="employee.active" ng-click="employee.active($index)" value="{{employeeData.active}}" class="active-toggle"/></td>
         <!--{{employeeData.active}}-->
       </tr>
     </tbody>
@@ -47,7 +47,7 @@
 </div>
 
 <div class="expenditures">
-  <h2>Monthly Salary Expenditures: {{employee.expenditure | currency}}</h2>
+  <h2>Monthly Salary Expenditures: <span class="{{employee.budgetEvaluator}}">{{employee.expenditure | currency}}</span></h2>
 
-  <h2>Current Monthly Budget: </h2>
+  <h2>Current Monthly Budget: {{employee.currentMonthlyBudget | currency}}</h2>
 </div>

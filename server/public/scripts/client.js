@@ -22,16 +22,34 @@ app.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
-app.controller('EmployeeController', ["$http", "budgetFactory", function($http , budgetFactory) {
-  console.log('Within Get Employee Controller');
+
+//Start of employee Controller
+app.controller('EmployeeController', ["$http", "budgetService", function($http , budgetService) {
   var self = this;
   self.employees = [];
   self.newEmployee = {};
-  self.expenditure;
+  self.expenditure = 0;
   getEmployees();
   getExpenditure();
-  console.log(budgetFactory);
-  getCurrentMonthlyBudget();
+
+  //Get the current budget and check to see if monthly expenditures are over or under budget
+  budgetService.getCurrentBudget()
+    .then(
+      function (result) {
+        console.log("Reult Console: ", result[0].budget);
+        self.currentMonthlyBudget = result[0].budget;
+        console.log(self.currentMonthlyBudget + " " + self.expenditure);
+        if (self.currentMonthlyBudget < self.expenditure) {
+          self.budgetEvaluator = "over";
+        } else {
+          self.budgetEvaluator = "under";
+        };
+      },
+      function (error) {
+        console.log(error.statusText);
+      }
+    );
+
 
   //Fetch employees from database to display on page
   function getEmployees() {
@@ -42,6 +60,8 @@ app.controller('EmployeeController', ["$http", "budgetFactory", function($http ,
     })
   }
 
+
+  //Calculate monthly expenditures
   function getExpenditure() {
     $http.get('/employees/expenditure')
     .then(function (response){
@@ -51,10 +71,7 @@ app.controller('EmployeeController', ["$http", "budgetFactory", function($http ,
     })
   }
 
-  function getCurrentMonthlyBudget() {
-    budgetFactory.getCurrentBudget();
-    console.log(budgetFactory.currentBudget);
-  }
+
 
   //Post new employess and run getEmployees when complete
   self.postEmployee = function() {
@@ -83,7 +100,7 @@ app.controller('EmployeeController', ["$http", "budgetFactory", function($http ,
 
 }]); ///end of EmployeeController
 
-app.controller('BudgetController', ["$http", function($http) {
+app.controller('BudgetController', ["$http", "budgetService", function($http, budgetService) {
   console.log("In Budget Controller");
   var self = this;
   self.budget = [];
@@ -97,7 +114,7 @@ app.controller('BudgetController', ["$http", function($http) {
       for (var i = 0; i < self.budget.length; i++) {
         self.budget[i].date = moment(self.budget[i].date).format('MM/DD/YYYY');
         // self.budget[i].date = momentDate.format("LLL");
-        console.log(self.budget[i].date);
+        // console.log(self.budget[i].date);
       }
       self.currentBudget = self.budget[0].budget;
     })
@@ -110,31 +127,52 @@ app.controller('BudgetController', ["$http", function($http) {
       newMonthlyBudget: self.newBudgetInput,
       date: budgetDate
     }
-    console.log(newBudgetNumber);
+    // console.log(newBudgetNumber);
     $http.post('/budget', newBudgetNumber)
       .then(function(response) {
         console.log('PUT finished. Employee updated.');
         getBudget();
         self.newBudgetInput = '';
       });
+
+      budgetService.getCurrentBudget()
+        .then(
+          function (result) {
+            console.log("Reult Console: ", result[0].budget);
+            self.currentMonthlyBudget = result[0].budget;
+            console.log(self.currentMonthlyBudget + " " + self.expenditure);
+            if (self.currentMonthlyBudget < self.expenditure) {
+              self.budgetEvaluator = "over";
+            } else {
+              self.budgetEvaluator = "under";
+            };
+          },
+          function (error) {
+            console.log(error.statusText);
+          }
+        );
   }
 }]); ///end of budget controller
 
 app.controller('HomeController', ["$http", function($http) {
   console.log("In Home Controller");
 
-}]);
+}]); //end of home controller
 
 
-app.factory('budgetFactory', function($http) {
-  console.log("Budget Factory");
-  var service = {};
-  service.getCurrentBudget = function() {
-    $http.get('/budget')
+
+//budget Service to get the current budget and share it with the employee and budget controllers
+app.service('budgetService', ["$http", "$q", function($http, $q) {
+  var deferred = $q.defer();
+
+  this.getCurrentBudget = function() {
+    return $http.get('/budget')
     .then(function (response){
-      console.log("Response.data: ", response.data);
-       service.currentBudget = response.data[0].budget;
+       deferred.resolve(response.data);
+       return deferred.promise;
+    }, function(response) {
+        deferred.reject(response);
+        return deferred.promise
     })
   }
-  return service;
-}); //end of budget factory
+}]); //end of budget service
